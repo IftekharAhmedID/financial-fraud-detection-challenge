@@ -2,15 +2,18 @@ import csv
 
 def detect_fraud(transactions_file='transactions.csv'):
     """
-    A simple and inefficient fraud detection script.
+    Detects fraudulent transactions based on a simple amount threshold.
     """
     fraudulent_transactions = []
     with open(transactions_file, 'r') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
-            # A very simple and ineffective rule
-            if float(row['amount']) > 9000:
-                fraudulent_transactions.append(row['transaction_id'])
+            try:
+                amount = float(row['amount'])
+                if amount > 1000:
+                    fraudulent_transactions.append(row['transaction_id'])
+            except (ValueError, TypeError, KeyError):
+                continue
 
     return fraudulent_transactions
 
